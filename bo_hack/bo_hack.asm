@@ -14,17 +14,11 @@ incsrc ./macros.asm
 ;between damages
 ;scales up over the course of one hour?
 
-!heat_const         =       #$0400
-;!heat_curr          =       $c2            ;currently unused due to rewrite in table format
-!heat_counter       =       $c4
-!tablemax           =       60              ;number of table entries for delay amount
-
 !enviro_subdmg      =       $0a4e
 
 !igt_minutes        =       $09de
 !igt_seconds        =       $09dc
 !igt_frames         =       $09da
-
 
 
 org $828b4b
@@ -43,5 +37,5 @@ org $82f70f
 
 org $82fe00
     delaytable:
-    %list($0200, $8000, 60)
+    %list($0080, $8000, 80)
     ;list(startvalue, endvalue, numberofentries)
