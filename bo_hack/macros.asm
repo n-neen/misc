@@ -17,6 +17,8 @@
 
 ;1000/60
 
+
+;delaytable macro
 macro list(startvalue, endvalue, numberofentries)
     !a #= <startvalue>
     !stepwidth #= <endvalue>/<numberofentries>
