@@ -5,29 +5,6 @@ lorom
 incsrc ./macros.asm
 
 ;defines-----------------------------------------------------------------------
-;pointers
-
-!EnergyTank             =   $E0B6
-!Missile                =   $E0D6
-!SuperMissile           =   $E100
-!PowerBomb              =   $E120
-!Bomb                   =   $E152
-!ChargeBeam             =   $E180
-!IceBeam                =   $E1AE
-!HiJumpBoots            =   $E1DC
-!SpeedBooster           =   $E20A
-!WaveBeam               =   $E238
-!Spazer                 =   $E266
-!SpringBall             =   $E294
-!VariaSuit              =   $E2C8
-!GravitySuit            =   $E2F6
-!PlasmaBeam             =   $E358
-!GrappleBeam            =   $E386
-!SpaceJump              =   $E3B8
-!ScrewAttack            =   $E3E6
-!ReserveTank            =   $E442
-!XRayScope              =   $ECBD
-
 ;probabilities
 
 !prob_Missile           =   38
@@ -56,15 +33,17 @@ incsrc ./macros.asm
 
 org $84efd3             ;first available freespace in $84
     roll:
+        phy
+        
+        %loadby_y($0002, $0014)         ;load music track
+        jsr $8bdd
+        
         jsl $808111
         and #$007f
         inc
         asl
         tax
-        phy
-        phx
         jsr (probtable,x)
-        plx
         ply
         rts
         
@@ -95,135 +74,137 @@ org $84f000             ;item plm
 
 ;probability table----------------------------------------------------------------------------
 
-macro table_entry(item)
-    %table_write(<item>, !prob_<item>)
-endmacro
-
-macro table_write(word, repeats)
-    !a #= <repeats>
-    while !a > 0
-        dw <word>
-        !a #= !a-1
-    endwhile
-endmacro
-
 org $84f200
     probtable:
     print "probability table start - ", pc
-    %table_entry(Missile);;;
-    %table_entry(SuperMissile);;;
-    %table_entry(Bomb);;;
-    %table_entry(SpeedBooster);;;
+    %table_entry(Missile)
+    %table_entry(SuperMissile)
+    %table_entry(Bomb)
+    %table_entry(SpeedBooster)
     %table_entry(ChargeBeam)
     %table_entry(Spazer)
-    %table_entry(HiJumpBoots);;;
-    %table_entry(PowerBomb);;;
-    %table_entry(EnergyTank);;;
-    %table_entry(ReserveTank);;;
-    %table_entry(SpaceJump);;;
+    %table_entry(HiJumpBoots)
+    %table_entry(PowerBomb)
+    %table_entry(EnergyTank)
+    %table_entry(ReserveTank)
+    %table_entry(SpaceJump)
     %table_entry(WaveBeam)
-    %table_entry(VariaSuit);;;
+    %table_entry(VariaSuit)
     %table_entry(GrappleBeam)
-    %table_entry(XRayScope);;;
+    %table_entry(XRayScope)
     %table_entry(IceBeam)
-    %table_entry(SpringBall);;;
+    %table_entry(SpringBall)
     %table_entry(PlasmaBeam)
-    %table_entry(GravitySuit);;;
-    %table_entry(ScrewAttack);;;
+    %table_entry(GravitySuit)
+    %table_entry(ScrewAttack)
+    
+    print "end - ",pc
     
     Missile:
-        ldy #$0002
+        %loadby_y($0002, $0014)         ;missile amount
         jsr $89a9
-        bra common
+        jmp common
         
     EnergyTank:
-        ldy #$0064
+        %loadby_y($0064, $0014)         ;tank amount
         jsr $8968
-        bra common
+        jmp common
         
     PowerBomb:
-        ldy #$0005
+        %loadby_y($0005, $0014)         ;pb amount
         jsr $89fb
-        bra common
+        jmp common
         
     SuperMissile:
-        ldy #$0001
+        %loadby_y($0001, $0014)         ;super amount
         jsr $89d2
-        bra common
+        jmp common
         
     ReserveTank:
-        ldy #$0064
+        %loadby_y($0064, $0014)         ;reserve amount
         jsr $8986
-        bra common
+        jmp common
         
     Bomb:
-        ldy #$1000
-        bra major
+        %loadby_y($1000, $0014)         ;major item type
+        ;%loadby_y($1300, $0016)         ;message box index [all below byte reversed for endianness]
+        jmp major
         
     SpeedBooster:
-        ldy #$2000
-        bra major
+        %loadby_y($2000, $0014)         ;major item type
+        ;%loadby_y($0d00, $0016)         ;message box index
+        jmp major
         
     HiJumpBoots:
-        ldy #$0100
-        bra major
+        %loadby_y($0100, $0014)         ;major item type
+        ;%loadby_y($0b00, $0016)         ;message box index
+        jmp major
         
     SpaceJump:
-        ldy #$0200
-        bra major
+        %loadby_y($0200, $0014)         ;major item type
+        ;%loadby_y($0c00, $0016)         ;message box index
+        jmp major
         
     VariaSuit:
-        ldy #$0001
-        bra major
+        %loadby_y($0001, $0014)         ;major item type
+        ;%loadby_y($0700, $0016)         ;message box index
+        jmp major
         
     GravitySuit:
-        ldy #$0020
-        bra major
+        %loadby_y($0020, $0014)         ;major item type
+        ;%loadby_y($1a00, $0016)         ;message box index
+        jmp major
         
     ScrewAttack:
-        ldy #$0008
-        bra major
+        %loadby_y($0008, $0014)         ;major item type
+        ;%loadby_y($0a00, $0016)         ;message box index
+        jmp major
         
     XRayScope:
-        ldy #$8000
-        bra major
+        %loadby_y($8000, $0014)         ;major item type
+        ;%loadby_y($0600, $0016)         ;message box index
+        jmp major
         
     SpringBall:
-        ldy #$0002
-        bra major
+        %loadby_y($0002, $0014)         ;major item type
+        ;%loadby_y($0800, $0016)         ;message box index
+        jmp major
         
     GrappleBeam:
-        ldy #$4000
+        %loadby_y($4000, $0014)         ;major item type
+        ;%loadby_y($0500, $0016)         ;message box index
         
     major:
         jsr $88f3
         bra common
         
     ChargeBeam:
-        ldy #$1000
+        %loadby_y($1000, $0014)         ;beam type
+        ;%loadby_y($0e00, $0016)         ;message box index
         bra beam
     
     Spazer:
-        ldy #$0004
+        %loadby_y($0004, $0014)         ;beam type
+        ;%loadby_y($1100, $0016)         ;message box index
         bra beam
     
     WaveBeam:
-        ldy #$0001
+        %loadby_y($0001, $0014)         ;beam type
+        ;%loadby_y($1000, $0016)         ;message box index
         bra beam
     
     PlasmaBeam:
-        ldy #$0008
+        %loadby_y($0008, $0014)         ;beam type
+        ;%loadby_y($1200, $0016)         ;message box index
         bra beam
     
     IceBeam:
-        ldy #$0002
+        %loadby_y($0002, $0014)         ;beam type
+        ;%loadby_y($0f00, $0016)         ;message box index
     
     beam:
         jsr $88b0
         
     common:
-        ldy #$0002
-        jsr $8bdd
         rts
     
-    print "end - ",pc
