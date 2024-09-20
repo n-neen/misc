@@ -31,20 +31,26 @@ incsrc ./macros.asm
 
 ;rolling an item
 
-org $84efd3             ;first available freespace in $84
+org $84efd3                             ;first available freespace in $84
     roll:
+        phx
         phy
         
-        %loadby_y($0002, $0014)         ;load music track
+        %loadby_y($0002, $0014)         ;load music track (fanfare)
         jsr $8bdd
-        
         jsl $808111
-        and #$007f
+        and #$007f                      ;random number 0-$80
         inc
-        asl
+        asl                             ;x2
         tax
-        jsr (probtable,x)
+        jsr (probtable,x)               ;index into jump table
+        
+        ldx $1c27
+        lda #$dfa9                      ;instruction list pointer=
+        sta $1d27,x                                 ;dfa9 (deletion)
+        
         ply
+        plx
         rts
         
 org $84f000             ;item plm
@@ -62,9 +68,8 @@ org $84f000             ;item plm
             .link:
                 dw $8899            ;set item collected
             .end:
-                dw roll
-                dw $8724, $dfa9     ;goto delete item list
-                
+                dw roll             ;roll item. this routine handles deletion (setting instruction list pointer)
+                dw $8724, $dfa9
     draw:
         .one:
             dw $0001, $b001, $0000
@@ -126,81 +131,81 @@ org $84f200
         jmp common
         
     Bomb:
+        %loadby_y($0013, $0016)         ;message box index
         %loadby_y($1000, $0014)         ;major item type
-        ;%loadby_y($1300, $0016)         ;message box index [all below byte reversed for endianness]
         jmp major
         
     SpeedBooster:
+        %loadby_y($000d, $0016)         ;message box index
         %loadby_y($2000, $0014)         ;major item type
-        ;%loadby_y($0d00, $0016)         ;message box index
         jmp major
         
     HiJumpBoots:
+        %loadby_y($000b, $0016)         ;message box index
         %loadby_y($0100, $0014)         ;major item type
-        ;%loadby_y($0b00, $0016)         ;message box index
         jmp major
         
     SpaceJump:
+        %loadby_y($000c, $0016)         ;message box index
         %loadby_y($0200, $0014)         ;major item type
-        ;%loadby_y($0c00, $0016)         ;message box index
         jmp major
         
     VariaSuit:
+        %loadby_y($0007, $0016)         ;message box index
         %loadby_y($0001, $0014)         ;major item type
-        ;%loadby_y($0700, $0016)         ;message box index
         jmp major
         
     GravitySuit:
+        %loadby_y($001a, $0016)         ;message box index
         %loadby_y($0020, $0014)         ;major item type
-        ;%loadby_y($1a00, $0016)         ;message box index
         jmp major
         
     ScrewAttack:
+        %loadby_y($000a, $0016)         ;message box index
         %loadby_y($0008, $0014)         ;major item type
-        ;%loadby_y($0a00, $0016)         ;message box index
         jmp major
         
     XRayScope:
+        %loadby_y($0006, $0016)         ;message box index
         %loadby_y($8000, $0014)         ;major item type
-        ;%loadby_y($0600, $0016)         ;message box index
         jmp major
         
     SpringBall:
+        %loadby_y($0008, $0016)         ;message box index
         %loadby_y($0002, $0014)         ;major item type
-        ;%loadby_y($0800, $0016)         ;message box index
         jmp major
         
     GrappleBeam:
+        %loadby_y($0005, $0016)         ;message box index
         %loadby_y($4000, $0014)         ;major item type
-        ;%loadby_y($0500, $0016)         ;message box index
         
     major:
         jsr $88f3
         bra common
         
     ChargeBeam:
+        %loadby_y($000e, $0016)         ;message box index
         %loadby_y($1000, $0014)         ;beam type
-        ;%loadby_y($0e00, $0016)         ;message box index
         bra beam
     
     Spazer:
+        %loadby_y($0011, $0016)         ;message box index
         %loadby_y($0004, $0014)         ;beam type
-        ;%loadby_y($1100, $0016)         ;message box index
         bra beam
     
     WaveBeam:
+        %loadby_y($0010, $0016)         ;message box index
         %loadby_y($0001, $0014)         ;beam type
-        ;%loadby_y($1000, $0016)         ;message box index
         bra beam
     
     PlasmaBeam:
+        %loadby_y($0012, $0016)         ;message box index
         %loadby_y($0008, $0014)         ;beam type
-        ;%loadby_y($1200, $0016)         ;message box index
         bra beam
     
     IceBeam:
+        %loadby_y($000f, $0016)         ;message box index
         %loadby_y($0002, $0014)         ;beam type
-        ;%loadby_y($0f00, $0016)         ;message box index
     
     beam:
         jsr $88b0
