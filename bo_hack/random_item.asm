@@ -7,7 +7,7 @@ incsrc ./macros.asm
 ;defines-----------------------------------------------------------------------
 ;probabilities
 
-!prob_Missile           =   38
+!prob_Missile           =   39
 !prob_SuperMissile      =   10
 !prob_Bomb              =   10
 !prob_SpeedBooster      =   10
@@ -45,9 +45,9 @@ org $84efd3                             ;first available freespace in $84
         tax
         jsr (probtable,x)               ;index into jump table
         
-        ldx $1c27
-        lda #$dfa9                      ;instruction list pointer=
-        sta $1d27,x                                 ;dfa9 (deletion)
+        ;ldx $1c27
+        ;lda #$dfa9                      ;instruction list pointer=
+        ;sta $1d27,x                                 ;dfa9 (deletion)
         
         ply
         plx
@@ -68,7 +68,7 @@ org $84f000             ;item plm
             .link:
                 dw $8899            ;set item collected
             .end:
-                dw roll             ;roll item. this routine handles deletion (setting instruction list pointer)
+                dw roll             ;roll item
                 dw $8724, $dfa9
     draw:
         .one:

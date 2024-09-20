@@ -1,3 +1,5 @@
 "E:\Program Files (x86)\Emulators\super metroid\asar\asar.exe" --no-title-check --fix-checksum=off "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\bo_hack\heat_damage.asm" "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\bo_hack\hack9.smc"
 
 "E:\Program Files (x86)\Emulators\super metroid\asar\asar.exe" --no-title-check --fix-checksum=off "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\bo_hack\random_item.asm" "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\bo_hack\hack9.smc"
+
+"E:\Program Files (x86)\Emulators\super metroid\asar\asar.exe" --no-title-check --fix-checksum=off "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\bo_hack\AmoebaRNG.asm" "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\bo_hack\hack9.smc"
