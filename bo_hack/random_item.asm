@@ -2,12 +2,11 @@
 
 lorom
 
-incsrc ./macros.asm
 
 ;defines-----------------------------------------------------------------------
 ;probabilities
 
-!prob_Missile           =   39
+!prob_Missile           =   38
 !prob_SuperMissile      =   10
 !prob_Bomb              =   10
 !prob_SpeedBooster      =   10
@@ -27,6 +26,7 @@ incsrc ./macros.asm
 !prob_PlasmaBeam        =   1
 !prob_GravitySuit       =   1
 !prob_ScrewAttack       =   1
+
 
 
 ;rolling an item
@@ -166,9 +166,9 @@ org $84f200
         jmp major
         
     XRayScope:
-        %loadby_y($0006, $0016)         ;message box index
         %loadby_y($8000, $0014)         ;major item type
-        jmp major
+        jsr $8941
+        jmp common
         
     SpringBall:
         %loadby_y($0008, $0016)         ;message box index
@@ -176,8 +176,9 @@ org $84f200
         jmp major
         
     GrappleBeam:
-        %loadby_y($0005, $0016)         ;message box index
         %loadby_y($4000, $0014)         ;major item type
+        jsr $891a
+        bra common
         
     major:
         jsr $88f3

@@ -2,8 +2,6 @@
 
 lorom
 
-incsrc ./macros.asm
-
 ;    $09DA: Game time, frames
 ;    $09DC: Game time, seconds
 ;    $09DE: Game time, minutes
