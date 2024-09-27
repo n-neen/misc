@@ -67,8 +67,8 @@ org $84f000             ;item plm
                 dw $8724, .drawloop ;goto drawloop
             .link:
                 dw $8899            ;set item collected
-            .end:
                 dw roll             ;roll item
+            .end:
                 dw $8724, $dfa9
     draw:
         .one:
