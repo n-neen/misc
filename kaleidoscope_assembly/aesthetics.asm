@@ -60,3 +60,9 @@ org $81b35d
     skip 3
     lda #$0001      ;turn on moonwalk
     sta $09e4
+    
+    
+; Discovered by moehr
+; caauyjdp pointed this out to RT-55J
+; RT-55J pointed this out to me (neen)
+org $A08C3F : LDA #$0200

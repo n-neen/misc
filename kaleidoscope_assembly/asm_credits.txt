@@ -1,0 +1,18 @@
+Crashtour99ScrewAttackBlocks.asm by Crashtour99
+DoorGlitchFix_v1.2.asm by Black Falcon
+FF events & tubes.IPS by JAM
+FIXED_____BlackFalconSkippingCeres(andintro).ASM by Black Falcon [edited by neen]
+Kejardon_Block_Remover_Commented.asm by Kejardon (commented by Oi27)
+nodever_torizo_area_fix.asm by Nodever2
+pjboy_bt_fix.asm by PJBoy
+saveload.asm by Scyzer and Amoebaofdoom
+Scrolling_Sky_v1.5.asm by Amoebaofdoom
+EnemySolidBlock by Amoebaofdoom
+water tilemap fix by Black Falcon and PJBoy
+Block Remover by Vener
+
+screw attack changes, kaleidoscope item, screwtank item: by neen
+screwtank concept: RT-55J
+
+general help: Tundain, Amoeba, Smiley, Oi27, RT-55J, Omegadragnet7/9, PJBoy, InsaneFirebat, Strotlog
+special thanks: Digital Mantra, Alberto, RT-55J, thedagit, jooniejoone, ironrusty, Kyzentun
