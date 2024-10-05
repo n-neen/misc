@@ -17,11 +17,13 @@ org $84e30f                                         ;in x-ray plm instruction li
 ;=============================================defines
 
 ;!noblend  = $9e              ;flag for moving layers. so we don't write to layer blending adresses twice
-!bg1x     = $b1
-!bg1y     = $b3
-!bg2x     = $b5
-!bg2y     = $b7
-!90free   = $90fe00
+!bg1x           = $b1
+!bg1y           = $b3
+!bg2x           = $b5
+!bg2y           = $b7
+!90free         = $90fe00
+!backdropbackup = $0dd8
+!backdropflag   = $0dda
 
 ;=============================================main item funcionality code
 org $91caf2
@@ -34,7 +36,7 @@ org $8887c5                 ;handle moving x-ray up/down
     rts                     ;creates freespace until $87df
 
 org $888896                 ;hdma table routine gone, plenty of space here
-    lagit:
+    lag:
         ;jsl $808338        ;wait for nmi
         ;jsl $808338        ;maybe not good? or maybe more good?
         ;jsl $808338
@@ -42,6 +44,17 @@ org $888896                 ;hdma table routine gone, plenty of space here
         jsl longshort       ;code for spawning speed echoes
         
     kaleidoscope:
+    
+    backdrop:
+        lda !backdropflag
+        bmi +
+        lda $7ec000
+        sta !backdropbackup
+        lda #$0400          ;backdrop color during scope only
+        sta $7ec000
+        lda #$8000
+        sta !backdropflag
++
 
         %subtract(!bg1x, #$0005)
         %subtract(!bg1y, #$0005)
@@ -67,16 +80,16 @@ org $888896                 ;hdma table routine gone, plenty of space here
         
         .up:
             inc !bg1y
-            bra +
+            bra ++
         .down:
             dec !bg1y
-            bra +
+            bra ++
         .left:
             inc !bg1x
-            bra +
+            bra ++
         .right:
             dec !bg1x
-            bra +
+            bra ++
         .L:
             %add(!bg1x, $05e5)
             ;lda !bg1x
@@ -84,7 +97,7 @@ org $888896                 ;hdma table routine gone, plenty of space here
             ;adc $05e5
             ;sta !bg1x
             sta !bg1y
-            bra +
+            bra ++
         .R:
             %add(!bg2x, $05e5)
             ;lda !bg2x
@@ -93,10 +106,13 @@ org $888896                 ;hdma table routine gone, plenty of space here
             ;sta !bg2x
             sta !bg2y
             
-+       rts
-        
+++      rts
 ;warn pc ;$8933
-    
+
+org $888a19                 ;hijack for restoring backdrop color (set previously, see above)
+    jsr restorebackdrop
+    nop
+
 org $88801f                 ;layer blending x-ray: can show blocks
     jsr spritesonlyblend
     ;jsr moveblend
@@ -126,6 +142,12 @@ org $88ff00
         rep #$20
         rts
         
+    restorebackdrop:
+        lda !backdropbackup
+        sta $7ec000
+        stz !backdropflag
+        rts
+        
 org $90fff0
     longshort:              ;speed echoes spawn
         jsr $d40d           ;d40d
@@ -134,8 +156,17 @@ org $90fff0
 org $91d2c3                 ;skip backdrop color set to grey during xray
     nop #10
     
+org $91d29a                 ;skip backdrop setting
+    nop #15
+    
 org $888974                 ;skip backdrop color set to black at end of xray
     nop #4
+    
+org $888709                 ;skip subscreen color math backdrop color setting
+    nop #15
+    
+org $888a74                 ;skip subscreen color math backdrop color setting
+    nop #12
 
 ;=============================================HUD
 

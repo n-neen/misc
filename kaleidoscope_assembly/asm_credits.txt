@@ -10,6 +10,7 @@ Scrolling_Sky_v1.5.asm by Amoebaofdoom
 EnemySolidBlock by Amoebaofdoom
 water tilemap fix by Black Falcon and PJBoy
 Block Remover by Vener
+Complementary suits patch by Maddo and Smiley
 
 screw attack changes, kaleidoscope item, screwtank item: by neen
 screwtank concept: RT-55J

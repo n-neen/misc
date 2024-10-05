@@ -37,14 +37,14 @@ org $8880d4
 org $88f200         ;have space until $817a
     newblend:
 	lda #$00
-	sta $6d        ;don't disable any of the subscreen area
+	sta $6d         ;don't disable any of the subscreen area
 	lda #$13
-	sta $69        ;direct coor, enable subscreen, enable sprites in window area
+	sta $69         ;direct coor, enable subscreen, enable sprites in window area
 	lda #$02
 	sta $6b         ;subscreen layers = bg2, bg3
 	lda #$a1
-	sta $71        ;force main screen black inside window, color math in window, direct color
+	sta $71         ;force main screen black inside window, color math in window, direct color
 	lda #$95
-	sta $73			;subtractive, enable math on: sprites, bg3, bg1 = 95
+	sta $73         ;subtractive, enable math on: sprites, bg3, bg1 = 95
     ;ldy #$02
 rts

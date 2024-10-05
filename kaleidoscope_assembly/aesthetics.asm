@@ -66,3 +66,23 @@ org $81b35d
 ; caauyjdp pointed this out to RT-55J
 ; RT-55J pointed this out to me (neen)
 org $A08C3F : LDA #$0200
+
+
+
+;extend hud to $20 scanlines
+
+org $8096a2
+    ldy #$001f
+    
+org $8096ea
+    ldy #$001f
+    
+org $80972c
+    ldy #$001f
+    
+org $80976a
+    ldy #$001f
+    
+org $8097d3
+    ldy #$001f
+    
