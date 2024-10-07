@@ -5,58 +5,79 @@ lorom
 !collected_items        =       $09a4
 !free_dp                =       $c2
 
-;according to:
-;        1: Varia suit
-;        2: Spring ball
-;        4: Morph ball
-;        8: Screw attack
-;        20h: Gravity suit
-;        100h: Hi-jump boots
-;        200h: Space jump
-;        1000h: Bombs
-;        2000h: Speed booster
-;        4000h: Grapple
-;        8000h: X-Ray
+!ammotable              =       $74a0           ;in 7e
+!maxammotable           =       $7500           ;in 7e
+
+;according to:                  index into ammo table (our item ID)
+;        $1: Varia suit         0
+;        $2: Spring ball        1
+;        $4: Morph ball         2
+;        $8: Screw attack       3
+;        $10                    
+;        $20: Gravity suit      4
+;        $40                    
+;        $80                    
+;        $100: Hi-jump boots    5
+;        $200: Space jump       6
+;        $400                   
+;        $800                   
+;        $1000: Bombs           7
+;        $2000: Speed booster   8
+;        $4000: Grapple         9
+;        $8000: X-Ray           A
 
 org $b88000
-    lockitem:
-        ;arguments:
-        ;A = item bits to lock
-        
-        ora !locked_items               ;!locked_items OR A
-        sta !locked_items               ;add bits in A to !locked_items
-        
-        lda !locked_items
-        eor #$ffff                      ;!free_dp = inverted locked_items
-        sta !free_dp
-        
-        lda !equipped_items             
-        eor !free_dp                    ;equipped items = equipped items EOR locked items
-        sta !equipped_items
-        
-        rtl
-        
     
-    checklock:
-        ;arguments:
-        ;A = lock to check
+    checkammo:
+        ;takes arguments:
+        ;   X = item ID
         ;returns:
-        ;carry set = locked
-        ;carry not set: not locked
+        ;   carry clear = no ammo
+        ;   carry set   = yes ammo
         
-        sta !free_dp
-        bit !locked_items
+        txa
+        asl
+        tax
+        lda $7e0000+!ammotable,x
+        sec
         bne +
         clc
++       rtl
+
+
+    resetammo:
+        ;reset all items to max
+        phx
+        phy
+        
+        ldx #$0000
+        .loop:
+        lda $7e0000+!maxammotable,x
+        sta $7e0000+!ammotable,x
+        inx : inx
+        cpx #$0016          ;we inx after sta so need to go one word beyond
+        bne .loop
+        
+        ply
+        plx
         rtl
         
-+       sec
+        
+    giveammo:
+        ;takes arguments:
+        ;   X = item ID
+        ;   A = amount of ammo
+        sta !free_dp
+        
+        lda $7e0000+!ammotable,x
+        clc
+        adc !free_dp
+        sta $7e0000+!ammotable,x
+        
+        lda $7e0000+!maxammotable,x
+        clc
+        adc !free_dp
+        sta $7e0000+!maxammotable,x
+        
         rtl
-    
-    
-    releaselocks:
-        lda !locked_items               ;add locked item bits back to equipped item bits
-        ora !equipped_items
-        sta !equipped_items
-        stz !locked_items               ;clear locked item bits
-        rts
+        
