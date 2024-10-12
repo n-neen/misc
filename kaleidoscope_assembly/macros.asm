@@ -47,6 +47,12 @@ macro laypowerbomb(x, y)        ;16 bytes
     jsl $888aa4                 ;spawn pb explosion
 endmacro
 
+macro loadby_y(value, templocation)
+    ldy #<templocation>
+    lda <value>
+    sta <templocation>
+endmacro
+
 ;macro marco()
 ;    <>
 ;endmacro

@@ -60,9 +60,9 @@ org !80free             ;draw screw attack damage in hud
     
 +       lda $09a4
         bit #$0008
-        beq ++           ;if screw is not obtained, exit
+        beq ++          ;if screw is not obtained, exit
         
-        lda #$9dd3		;tilemap pointer setup for hud drawing
+        lda #$9dd3      ;tilemap pointer setup for hud drawing
         sta $00
         lda #$0080
         sta $02
@@ -96,4 +96,3 @@ org $809a39                             ;grapple (our screw) moved to vanilla xr
 org $809abd                             ;grapple hud init
     lda $09a4                           ;change to check for screw collected (not grapple equipped)
     bit #$0008
-    
