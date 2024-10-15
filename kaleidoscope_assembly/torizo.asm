@@ -20,6 +20,53 @@ org $a0bab5         ;drop spawn positions
     and #$0f00
 org $a0bac2
     adc !samusy     ;y
+    
+
+
+org $aacad1
+    cmp #$0170      ;gt fall height
+    bpl $05
+    
+;gt palette
+
+macro torizo_palette_copypaste()
+    sta $7ec300,x       ;target palette 0
+    skip 3
+    sta $7ec3e0,x       ;target palette 7
+endmacro
+
+org $aac257
+    %torizo_palette_copypaste()
+
+org $aac29f
+    %torizo_palette_copypaste()
+    
+org $aac287
+    %torizo_palette_copypaste()
+    
+org $aac26f
+    %torizo_palette_copypaste()
+    
+org $aac2b7
+    sta $7ec100,x       ;palette 0
+    skip 3
+    sta $7ec1e0,x       ;palette 7
+    
+org $aac8c8         ;this forces palette (inside init routine)
+    nop #3
+
+;gt starting location
+
+org $aac961
+    dw $0300    ;x
+    
+org $aac965
+    dw $0030    ;y
+    
+org $aad5ca     ;gt samus x position trigger
+    lda #$280
+    cmp $0af6
+    bmi $0c
 
 ;=============================STATUE CRASH
 

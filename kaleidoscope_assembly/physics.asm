@@ -39,9 +39,7 @@ org $90991c
 org $9099a9
     bit #$0020
     
-    
-    
-    
+
 ;scalable pseudoscrew
 ;org $a0a4d2
 ;    beq here
