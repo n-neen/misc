@@ -25,7 +25,7 @@ GoldenTorizo_HealthBasedPalette_Handling:
                      
 .loop:               
     LDA.W .palette2,Y
-    STA.L $7EC100,X             ;palette 0
+    STA.L $7EC140,X             ;palette 2
     LDA.W .palette1,Y
     STA.L $7EC1e0,X             ;palette 7
     DEY              
