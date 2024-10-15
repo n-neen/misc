@@ -30,7 +30,7 @@ org $aacad1
 ;gt palette
 
 macro torizo_palette_copypaste()
-    sta $7ec300,x       ;target palette 0
+    sta $7ec340,x       ;target palette 2
     skip 3
     sta $7ec3e0,x       ;target palette 7
 endmacro
@@ -48,7 +48,7 @@ org $aac26f
     %torizo_palette_copypaste()
     
 org $aac2b7
-    sta $7ec100,x       ;palette 0
+    sta $7ec140,x       ;palette 2
     skip 3
     sta $7ec1e0,x       ;palette 7
     
