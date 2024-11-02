@@ -1,7 +1,14 @@
 lorom
 
-!samusx         =   $0af6
-!samusy         =   $0afa
+incsrc ./macros.asm
+
+!samusx             =   $0af6
+!samusy             =   $0afa
+
+!torizohitcounter   =   $0364
+!handletorizohit    =   $888fba
+
+;==========================================================bt
 
 org $aac90f
     nop #4          ;skip haze
@@ -21,11 +28,7 @@ org $a0bab5         ;drop spawn positions
 org $a0bac2
     adc !samusy     ;y
     
-
-
-org $aacad1
-    cmp #$0170      ;gt fall height
-    bpl $05
+;==========================================================gt
     
 ;gt palette
 
@@ -52,23 +55,68 @@ org $aac2b7
     skip 3
     sta $7ec1e0,x       ;palette 7
     
-org $aac8c8         ;this forces palette (inside init routine)
+org $aac8c8             ;this forces palette (inside init routine)
     nop #3
+
+org $aab271
+    lda #$8400          ;$8000 = palette 7, $0400 = palette 2
+                        ;individual bits here before calling a palette fade routine in $82
 
 ;gt starting location
 
 org $aac961
-    dw $0300    ;x
+    dw $0300        ;x
     
 org $aac965
-    dw $0030    ;y
+    dw $0030        ;y
     
-org $aad5ca     ;gt samus x position trigger
-    lda #$280
+org $aad5ca         ;gt samus x position trigger
+    lda #$0300
     cmp $0af6
     bmi $0c
+    
+org $aacad1
+    cmp #$0170      ;gt fall check
+    bpl $05
+    
+    
+;gt hurt reaction
 
-;=============================STATUE CRASH
+org $aad3bd
+    jsr gthurtreaction
+
+org $aaff00
+    gthurtreaction:
+    
+    jsr $c620
+    
+    lda !torizohitcounter
+    clc
+    adc #$0003
+    sta !torizohitcounter
+
+    rts
+    
+
+org $8ff8a0         ;main room routine for gt's room
+    lda !torizohitcounter
+    beq +
+    
+    sep #$20
+    lda $77
+    eor #%00001000        ;#$08
+    sta $77
+    rep #$20
+    
+    dec !torizohitcounter
+    rts
+    
++   stz $77
+    rts
+
+
+
+;==========================================================STATUE CRASH
 
 org $84d3c3
     dw $86bc        ;skip music change from bt crumbling plm
