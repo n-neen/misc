@@ -104,7 +104,7 @@ org $8ff8a0         ;main room routine for gt's room
     
     sep #$20
     lda $77
-    eor #%00001000        ;#$08
+    ora #%00001000        ;#$08
     sta $77
     rep #$20
     

@@ -3,7 +3,7 @@ lorom
 !screwdmg   = $09ec         ;free ram. needs to be saved to sram
 !screwinc   = #$0001        ;amount to increase damage for every tank collected
 !80free     = $80e000       ;bank $80 freespace
-;!81free     = $81ff60      ;bank $81 freespace [removed]
+!81free     = $81ff60       ;bank $81 freespace
 !84free     = $84f900
 
 org $899000                 ;overwrites reserve tank graphics
@@ -31,14 +31,14 @@ org !84free                 ;increase screw damage
         iny : iny           ;skip the "reserve tank amount" part of inst list
         rts
         
-;org $81b309
-;    jsr screwinit
+org $81b309
+    jsr screwinit
 
-;org !81free                 ;initialize screw damage to 1 damage per frame (when new game is started)
-;    screwinit:
-        ;lda #$0001         
-        ;sta !screwdmg       ;this has been moved to be run by the screw attack plm
-;        rts                 ;to avoid needing freespace in $81
+org !81free                 ;initialize screw damage to 1 (when new game is started)
+    screwinit:
+        lda #$0001         
+        sta !screwdmg       ;this has been moved to be run by the screw attack plm
+        rts                 ;to avoid needing freespace in $81
         
         
 ;=============================================HUD
@@ -85,8 +85,8 @@ org !84free+30
         dw $86bc                        ;delete
         
     screwhudinit:
-        lda #$0001                      ;init to 1 which is actually 0
-        sta !screwdmg
+        ;lda #$0001                     ;init to 1 which is actually 0
+        ;sta !screwdmg         ;-------->>>>>>>>>>>>>this made no sense to do here. reverted back to init this when new save is created
         jsl $809a2e                     ;add grapple to hud tilemap
         rts
 
@@ -96,3 +96,4 @@ org $809a39                             ;grapple (our screw) moved to vanilla xr
 org $809abd                             ;grapple hud init
     lda $09a4                           ;change to check for screw collected (not grapple equipped)
     bit #$0008
+    

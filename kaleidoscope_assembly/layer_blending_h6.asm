@@ -14,6 +14,9 @@ lorom
 
 org $88803e+$30
     dw #newblend
+    
+org $88803e+$26
+    dw evennewerblend
 
 
 org $888156         ;have space until $817a
@@ -48,3 +51,13 @@ org $88f200         ;have space until $817a
 	sta $73         ;subtractive, enable math on: sprites, bg3, bg1 = 95
     ;ldy #$02
 rts
+
+evennewerblend:
+    ;LDY #$04    ; Y = 4
+    LDA #$11    ;\
+    STA $69     ;} Main screen layers = BG1/sprites
+    LDA #$02    ;\
+    STA $6B     ;} Subscreen layers = BG2/BG3
+    LDA #$B1    ;\
+    STA $71     ;} Enable subtractive colour math on BG1/sprites/backdrop
+    RTS         
