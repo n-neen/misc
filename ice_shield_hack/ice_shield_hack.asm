@@ -11,3 +11,10 @@ org $90f63b
     bne +
     jsr $cdaa
 +   rtl
+
+org $90ac39
+    lda #$0002
+    sta $09a6
+    sta $09a8
+    sec
+    rts
