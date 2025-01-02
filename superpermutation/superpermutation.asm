@@ -51,8 +51,8 @@ org $80cd8e
     
 +   and #$00ff
     
-	ldx #$00ae		;location
-	jsr $9d98		;"draw two hud digits"
+    ldx #$00ae		;location
+    jsr $9d98		;"draw two hud digits"
     plx
     rtl
 
