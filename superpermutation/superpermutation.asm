@@ -1,6 +1,12 @@
 lorom
 
-!bossindex      =       $09ec
+!bossindex  =   $09ec
+
+!k          =   #$2cea
+!p          =   #$2cef
+!d          =   #$2ce3
+!r          =   #$2cf1
+!done       =   #$2cff
 
 org $b88000
     bossbit:
@@ -21,6 +27,7 @@ org $b88000
 +       rep #$30
         rtl
         
+        
         .ordertable:
             db $01, $03, $04, $02, $01, $03, $04, $01, $02, $03, $04, $01, $03, $02, $04, $01, $03,
                $01, $04, $02, $03, $01, $04, $03, $02, $01, $04, $03, $01, $02, $04, $03, $01, $ff
@@ -35,7 +42,7 @@ org $828b4b
     jsl writehud
     nop #5
 
-org $80cd8e
+org $80d000
     writehud:
     lda #$9dd3      ;digit tile pointers
     sta $00
@@ -45,15 +52,44 @@ org $80cd8e
     phx
     ldx !bossindex
     lda.l bossbit_ordertable,x
-    bpl +
+    and #$00ff
+    cmp #$00ff
+    bne +
     
-    lda #$0099
+    lda !done
+    bra .write
     
-+   and #$00ff
++   
     
-    ldx #$00ae		;location
-    jsr $9d98		;"draw two hud digits"
-    plx
+    cmp #$0001
+    beq .k
+    
+    cmp #$0002
+    beq .r
+    
+    cmp #$0003
+    beq .p
+    
+    cmp #$0004
+    beq .d
+    
+    .k:
+        lda !k
+        bra .write
+    .p:
+        lda !p
+        bra .write
+    .d:
+        lda !d
+        bra .write
+    .r:
+        lda !r
+    
+    .write:
+        sta $7ec608+$ae
+    
+
+++  plx
     rtl
 
 org $a7c597                     ;kraid hijack

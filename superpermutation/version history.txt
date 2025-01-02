@@ -1,0 +1,5 @@
+v1:
+    initial writing. numbers on hud
+    
+v2:
+    first update. boss letters on hud.
