@@ -1,0 +1,1 @@
+"E:\Program Files (x86)\Emulators\super metroid\asar\asar.exe" --no-title-check --fix-checksum=off -v "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\superpermutation\superpermutation.asm" "E:\Program Files (x86)\Emulators\super metroid\A WORKBOOK FOLDER FULL OF NOTES AND CODE\superpermutation\superpermutation.sfc"
