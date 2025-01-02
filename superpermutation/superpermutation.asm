@@ -38,12 +38,12 @@ org $828b4b
 org $80cd8e
     writehud:
     lda #$9dd3      ;digit tile pointers
-	sta $00
-	lda #$0080
-	sta $02
-	
+    sta $00
+    lda #$0080
+    sta $02
+    
     phx
-	ldx !bossindex
+    ldx !bossindex
     lda.l bossbit_ordertable,x
     bpl +
     
