@@ -3,3 +3,12 @@ v1:
     
 v2:
     first update. boss letters on hud.
+    
+v3:
+    fixed crash at phantoon (missed rts LOL)
+    
+v4:
+    dont rember
+    
+v5:
+    ok i think it works now

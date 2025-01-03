@@ -13,10 +13,11 @@ org $b88000
         .check:
             sep #$30
             ldx !bossindex
-            lda .ordertable,x
+            lda.l .ordertable,x
             cmp #$ff
-            beq +
-            inc
+            beq ++
+            inx
+            lda.l .ordertable,x
             tax
         .toggle:
             lda $7ed828,x
@@ -27,15 +28,32 @@ org $b88000
 +       rep #$30
         rtl
         
+++      lda #$ff
+        sta $7ed829
+        sta $7ed82a
+        sta $7ed82b
+        sta $7ed82c
+        rep #$30
+        rtl
         
         .ordertable:
             db $01, $03, $04, $02, $01, $03, $04, $01, $02, $03, $04, $01, $03, $02, $04, $01, $03,
-               $01, $04, $02, $03, $01, $04, $03, $02, $01, $04, $03, $01, $02, $04, $03, $01, $ff
+               $01, $04, $02, $03, $01, $04, $03, $02, $01, $04, $03, $01, $02, $04, $03, $01, $ff, $ff
            
             ;boss order:
             ;k p d r k p d k r p d k p r d k p k d r p k d p r k d p k r d p k  ;letters
             ;1 2 3 4 1 2 3 1 4 2 3 1 2 4 3 1 2 1 3 4 2 1 3 2 4 1 3 2 1 4 3 2 1  ;traditional boss order index
             ;1 3 4 2 1 3 4 1 2 3 4 1 3 2 4 1 3 1 4 2 3 1 4 3 2 1 4 3 1 2 4 3 1  ;area index for boss
+            
+            ;to represent bosses in the above table, use their area:
+            ;0=crateria
+            ;1=brinstar         kraid       $01
+            ;2=norfair          ridley      $02
+            ;3=wrecked ship     phantoon    $03
+            ;4=maridia          draygon     $04
+            ;5=tourian
+            ;6=ceres
+            ;7=debug/unused
             
             
 org $828b4b
@@ -111,7 +129,7 @@ org $a7ff82
         jsl bossbit
         inc !bossindex
         jsl $a0ba0b             ;(the thing we overwrote) drops routine
-    
+        rts
     
 org $a592e2
     jsr draygonhijack
