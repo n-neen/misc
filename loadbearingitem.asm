@@ -16,12 +16,14 @@ org $848116
             phy
             
             ldy $1c27                   ;plm index
+            lda $1dc7,y
+            sta $16                     ;back up plm argument
             ldx $1c87,y                 ;plm block index
             lda $7f0002,x               ;level data word for the tile where the plm is
-            bit #$f000                  ;check collision nibble for zeroness (0 = air)
-            bne +                       ;if not air, exit
+            cmp $16                     ;check [plm room argument]
+            bne +                       ;if not matching, exit
             
-            lda #$ffff                  ;if air,
+            lda #$ffff                  ;if matching,
             sta $1840                   ;set earthquake timer
             tyx
             stz $1c37,x                 ;delete plm
