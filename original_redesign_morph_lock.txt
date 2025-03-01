@@ -1,0 +1,45 @@
+disassembled 6/20/2024 (apparently)
+
+AD C4 0D
+AA
+BF 02 64 7F
+29 FF 00
+C9 20 00
+F0 12
+C9 10 00
+F0 02
+80 14
+AD A1 09 
+29 FF 7F
+8D A1 09
+80 09
+AD A1 09
+09 00 80
+8D A1 09
+4C 82 8F
+
+org $94b1c0
+
+lda $0dc4
+tax
+lda $7f6402,x
+and #$00ff
+cmp #$0020
+beq $12
+cmp #$0010
+beq $02
+bra $14
+lda $09a1
+and #$7fff
+sta $09a1
+bra $09
+lda $09a1
+ora #$8000
+sta $09ad
+jmp $8f82
+
+
+;patch out morph lock
+lorom
+org $80d000
+nop#5

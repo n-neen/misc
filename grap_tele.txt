@@ -1,0 +1,23 @@
+grapple teleport destination room block types and if they work
+
+1 slope: yes
+2 air fool xray: no
+3 treadmill: no
+4 shot air: no
+5 h copy: yes, if copying a tile that can
+6 unused: no
+7 bomb air: no
+8 solid: yes
+9 door: yes
+a spike: yes
+    bts 0f (enemy breakable): yes
+b crumble: yes
+    bts 0b (enemy and beam solid): yes
+c shot:
+    bts 00 (regular respawning shot): yes, but ended up stuck in wall?
+    bts 04 (regular non-respawning): same as above
+    all pb and super blocks: yes
+    doorcap shot blocks: yes
+d v copy: yes, if copying a tile that can
+e grapple: yes, believe it or not
+f bomb: yes

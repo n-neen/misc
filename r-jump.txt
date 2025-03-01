@@ -1,0 +1,11 @@
+r-jump steps:
+
+1. align with ledge
+2. force standup in direction you will be r-jumping
+3. force crouch
+4. continue to hold down
+5. hold down + R
+6. pause
+7. near the end of fadeout, release R, press jump as late as possible
+8. unpause
+9. when screen is fully black, hold jump + down-[direction] (for sb in vanilla and cliffhanger early varia, this is down-right)

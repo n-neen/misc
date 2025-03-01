@@ -1,0 +1,5 @@
+scroll plm argument is a pointer to:
+
+org $8fxxxx
+    db !screenindex, !scrollvalue       ;screen is 0-indexed. scroll: 00 = red, 01 = blue, 02 = green
+    db $80                              terminator

@@ -1,0 +1,15 @@
+hack idea: cotm cards
+
+
+Element cards               
+
+ice                     beam
+wave                    passive bonus (walk speed, +armor, etc)
+fire                    projectile
+light                   teleport to element's level
+dark                    summon familiar
+time                    huge bonus with a drawback
+lightning               AOE
+
+
+each element has a dungeon/area themed around it

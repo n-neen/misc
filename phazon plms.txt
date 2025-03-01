@@ -1,0 +1,46 @@
+org $84eed7
+    ;4D EE 7F EC
+    dw ee4d, ec7f
+    
+org $84ee4d
+    ;vanilla etank setup
+    ;A9 08 00 80 0D
+    lda #$0008
+    bra $0d
+    
+org $84ec7f
+    ;7C 88 A4 EC
+    dw $887c, $eca4         ;goto eca4 if item is collected
+    dw $8a24, $ec9b         ;set link instruction = $ec9b
+    dw $86c1, $df89         ;set pre-instruction = $df89
+    dw $0004, $a2df         ;draw instruction
+    dw $0004, $a2e5         ;draw instruction
+    dw $0004, $d93a         ;draw instruction
+    dw $8724, $ec8b         ;goto ec8b
+    
+    ;ec9b:
+    dw $8899                ;set the room argument item collected
+    dw $fd98 : db $02       ;new instruction. music stuff
+    dw $8968, $0064
+    dw $8724, $dfa9
+    
+    
+org $84fd98
+    phx 
+    ldx #$0e
+    stz $0619,x
+    stz $0629,x             ;clear music queue?
+    dex
+    dex
+    bpl $84fd9c
+    plx 
+    lda $0639
+    sta $063b
+    lda #$00
+    sta $063f
+    sta $063d
+    lda $0000,y
+    and #$ff
+    jsl $8090cb
+    iny 
+    rts 

@@ -1,0 +1,26 @@
+level data pointer in rom
+    xor #$ffffff
+        ->
+        level data pointer in ram
+
+level data pointer in ram
+cbe472
+110010111110010001110010
+
+
+in 8f
+341b8d
+001101000001101110001101
+
+195fff landing site level data, obfuscated
+e6a000
+
+0f5fff bib brin, obf
+f0a000
+
+396406 xray room
+C69BF9
+
+792fd xray climb ending room (to right of ship)
+0a3fff
+f5c000

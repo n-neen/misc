@@ -1,0 +1,9 @@
+shot block, type C
+    BTS 46h: Left blue gate trigger
+    BTS 47h: Right blue gate trigger
+    BTS 48h: Left red gate trigger
+    BTS 49h: Right red gate trigger
+    BTS 4Ah: Left green gate trigger
+    BTS 4Bh: Right green gate trigger
+    BTS 4Ch: Left orange gate trigger
+    BTS 4Dh: Right orange gate trigger

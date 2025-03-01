@@ -1,0 +1,25 @@
+List of Airs
+
+Collision type / BTS value
+
+$0 / $00 : Normal air
+$2 / $00 : Air (fool x-ray)
+$3 / $0E : Respawning speed air
+$3 / $0F : Speed air
+$3 / $80 : "ice air", crateria only
+$4 / $00 : respawning shot air
+$4 / $04 : shot air
+$4 / $08 : respawning power bomb air
+$4 / $09 : power bomb air
+$4 / $0A : respawning super air
+$4 / $0B : super air
+$7 / $00 : respawning bomb air
+$7 / $04 : bomb air 
+
+
+List of Sands, All collision type 3
+
+BTS Maridia 80h/81h/82h. Quicksand surface
+BTS Maridia 83h. Submerging quicksand
+BTS Maridia 84h. Sand falls - slow
+BTS Maridia 85h. Sand falls - fast

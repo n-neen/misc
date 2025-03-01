@@ -1,0 +1,9 @@
+Sʍiley — Today at 5:23 PM
+$82:EED9 A9 1E 00    LDA #$001E             ;\ Else ([loading game state] = 0): This to LDA #$001F I presume
+
+
+AmoebaOfDoom — Today at 5:24 PM
+The only thing you really need to happen is to set $7ED914 to $0005 when making a new file.
+Then you'll just load straight at the ship already on the ground. 
+
+
