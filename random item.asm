@@ -1,6 +1,7 @@
 ;random item plm
 
 ;unfinished, broken, crashes
+;see ./bo_hack/ for one that actually works
 lorom
 
 ;==================================DEFINES==================================
