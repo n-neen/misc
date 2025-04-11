@@ -1,0 +1,1 @@
+japanese text flag toggles forced wave beam option (hard mode)
