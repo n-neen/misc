@@ -9,52 +9,69 @@ org $88803e+$12
 org $88803e+$1e
     dw #lightwater
     
+org $88803e+$20
+    dw #dark
+    
 org $88ee32
-    ethereal:
-    
-    lda #%00010011          ;main screen
-    sta $69
-    
-    lda #%00000100          ;subscreen
-    sta $6b
-    
-    lda #%00000010          ;enable color math
-    sta $70
-    
-    lda #%00111111          ;color math layers
-    sta $73
-    
-    rts
-    
-    
-    light:
-    lda #%00010010          ;main screen
-    sta $69
-    
-    lda #%00010111          ;subscreen
-    sta $6b
-    
-    lda #%00000010          ;enable color math
-    sta $70
-    
-    lda #%00111111          ;color math layers
-    sta $73
-    rts
+    ethereal:               ;0e
+        lda #%00010011          ;main screen
+        sta $69
+        
+        lda #%00000100          ;subscreen
+        sta $6b
+        
+        lda #%00000010          ;enable color math
+        sta $70
+        
+        lda #%00111111          ;color math layers
+        sta $73
+        
+        rts
     
     
-    lightwater:
-    lda #%00010010          ;main screen
-    sta $69
+    light:                  ;$12
+        lda #%00010010          ;main screen        00010010
+        sta $69
+        
+        lda #%00010111          ;subscreen          00010111
+        sta $6b
+        
+        lda #%00000010          ;enable color math
+        sta $70
+        
+        lda #%00111111          ;color math layers
+        sta $73
+        rts
     
-    lda #%00010111          ;subscreen
-    sta $6b
     
-    lda #%00000010          ;enable color math
-    sta $70
+    lightwater:             ;1e
+        lda #%00010010          ;main screen
+        sta $69
+        
+        lda #%00010111          ;subscreen
+        sta $6b
+        
+        lda #%00000010          ;enable color math
+        sta $70
+        
+        lda #%00111111          ;color math layers
+        sta $73
+        rts
     
-    lda #%00111111          ;color math layers
-    sta $73
-    rts
+    dark:
+        lda #%00010101          ;main screen
+        sta $69
+        
+        lda #%00000111          ;subscreen
+        sta $6b
+        
+        lda #%00000010          ;enable color math
+        sta $70
+        
+        lda #%10111111          ;color math layers
+        sta $73
+        
+        rts
     
     
 org $89aa02

@@ -8,11 +8,11 @@ lorom
 
 ;botwoon hole locations
 org $b3949b
-        ;left,          right,          top,            bottom boundary
-    dw  $003c|!kxscreen,$0044|!kxscreen,$006c|!kyscreen,$0074|!kyscreen,    ; left hole
-        $007c|!kxscreen,$0084|!kxscreen,$00ac|!kyscreen,$00b4|!kyscreen,    ; bottom hole
-        $009c|!kxscreen,$00a4|!kxscreen,$005c|!kyscreen,$0064|!kyscreen,    ; top hole
-        $00dc|!kxscreen,$00e4|!kxscreen,$008c|!kyscreen,$0094|!kyscreen     ; right hole
+        ;left,           right,           top,             bottom boundary
+    dw  $003c|!kxscreen, $0044|!kxscreen, $006c|!kyscreen, $0074|!kyscreen,    ; left hole
+        $007c|!kxscreen, $0084|!kxscreen, $00ac|!kyscreen, $00b4|!kyscreen,    ; bottom hole
+        $009c|!kxscreen, $00a4|!kxscreen, $005c|!kyscreen, $0064|!kyscreen,    ; top hole
+        $00dc|!kxscreen, $00e4|!kxscreen, $008c|!kyscreen, $0094|!kyscreen     ; right hole
 
 org $86eba8         ;botwoon body contact damage
     db $20
@@ -52,8 +52,9 @@ org $b3958f     ;botwoon's init routine
     nop #18     ;this is where the wall plm is spawned
                 ;and also where the scroll is changed
                 
-org $b39add     ;botwoon death routine
-    nop #8      ;this is where the wall crumbler is spawned
+org $b39add     ;botwoon death routine. 8 bytes here
+    inc $0e50   ;inc room enemy death counter
+    nop #5      ;this is where the wall crumbler is spawned
                 ;drops happen immediately after
                 
 org $a0ba4f

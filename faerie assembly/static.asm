@@ -29,7 +29,7 @@ noise: {
         sta $7ecade
         
         jsl $888435
-        db $40, $13 : dw #scrollerobject    ;the object that randomly moves the tilemap
+        db $00, $85 : dw #scrollerobject    ;the object that randomly moves the tilemap
 
         rtl
     }
@@ -56,7 +56,7 @@ scrollerobject: {
         ;for the bg3 scrolls
         ;see noise_spawn for the addresses you would write to, here
         
-        lda $197e               ;liquid bit flags
+        lda $197e               ;liquid bitflags
         bit #$0020
         bne +
         
@@ -77,6 +77,10 @@ scrollerobject: {
     +
         lda $b1
         sta $7ecadc
+        
+        ;lda $b3
+        ;sta $7ecade            ;hmmmmmmmm
+        
         rtl
         
     }

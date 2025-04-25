@@ -2,8 +2,6 @@ lorom
 
 ;onyx hook
 
-!roompointer        =       $8027
-
 org $8ff000
 hook: {
     
@@ -16,11 +14,13 @@ hook: {
         lda #$0009
         sta $0998       ;change game mode to start door transition
         
-        lda $80c4d5     ;load station crateria #1 door pointer
-        sta $078d
+        lda $80c4b5     ;pointer to crateria load point list
+        tax
+        lda $800010,x   ;door pointer for crateria load point 1
+        sta $078d       ;door pointer for upcoming transition
         
         lda #$e17d
-        sta $099c       ;door transition function pointer
+        sta $099c       ;set initial door transition function pointer
         
     +   rtl
     }
