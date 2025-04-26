@@ -1,7 +1,7 @@
 lorom
 
 !bg4tilemapvram     =   $4000
-!hudflag            =   $a1     ;whether or not we want to change drawing mode, etc. checked in bg4handler, set in flagset
+!hudflag            =   $a1     ;whether or not we want to change drawing mode, etc. checked in nmihijack, set in flagset
 !bg1xscrollbackup   =   $c1
 !bg1yscrollbackup   =   $c3
 
