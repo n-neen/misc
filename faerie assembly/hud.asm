@@ -1,6 +1,11 @@
 lorom
 
+;for github users:
+;HUD.gfx is the graphics file you need to have in smart, at: /project/export/maps/HUD.gfx
+;palettes provided on request
+
 ;todo:
+;orbs not written at all. do that i guess (you won't)
 ;incsrc "./orbs/orbs.asm"
 incsrc "./hud/mode0.asm"
 incsrc "./hud/minimapremoval.asm"

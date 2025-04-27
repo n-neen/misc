@@ -4,6 +4,7 @@ lorom
 !hudflag            =   $a1     ;whether or not we want to change drawing mode, etc. checked in nmihijack, set in flagset
 !bg1xscrollbackup   =   $c1
 !bg1yscrollbackup   =   $c3
+!hudcolormath       =   $0e
 
 ;todo:
 ;       check draygon interrupts
@@ -12,18 +13,49 @@ org $80cd8e
 
 
 irqcleanup: {
+    ;we enter this routine with a known A
+    ;to be stored in $212c
+    ;however, we need to turn off the screen as fast as possible
+    ;so keep it in x then do it after. i can't believe it matters
+    
+    tax
+    
+    lda #$80
+    ora $51
+    sta $2100
+    
+    txa
     sta $212c       ;the thing we overwrote (this hijack gets used several times!)
     
-    ;lda !hudflag   ;this makes the interrupt timing run out, believe it or not
-    ;beq +          ;hopefully it doesn't even matter
-    
+    ;this is where you get the fblank to do stuff
     lda $6b
     sta $212d       ;restore subscreen layers
     
-    ;anything else here? uhhhh
     lda #$01
     sta $2105       ;mode back to 1
-    rts
+    
+    jsr waitforhblank_end
+    
+    lda $51
+    sta $2100
+    
++   rts
+}
+
+waitforhblank: {
+    .end: {
+    -   lda $4212
+        bit #$40
+        beq -
+        rts
+    }
+    
+    .start {
+    -   lda $4212
+        bit #$40
+        bne -
+        rts
+    }
 }
 
 
@@ -31,7 +63,12 @@ bg4handler: {
     ;we rep #$30'd right before coming here
     inc $05b6           ;the thing we overwrote
     
-    jsr flagset ;determine if we want to update the hud's bg4 in the current game mode
+    jsr flagset         ;determine if we want to update the hud's bg4 in the current game mode
+    
+    lda $079f
+    tax
+    lda bg4tilemap_colormath,x
+    sta !hudcolormath
     
     lda !hudflag
     beq +
@@ -87,7 +124,7 @@ bg4handler: {
         lda !hudflag
         beq +
         
-        lda #%00001100  ;main screen: bg3, bg4
+        lda #%00000100  ;main screen: bg3, bg4
         sta $212c
         
         lda #%00001000  ;subscreen: bg4
@@ -97,9 +134,9 @@ bg4handler: {
         sta $2130
         
         stz $2105       ;drawing mode = 0
-        
-        lda #%00001100  ;enable color math on bg3, bg4
-        sta $2131
+
+        lda !hudcolormath
+        sta $2131       ;previously set from list at bg4tilemap_colormath
         
         rep #$20
     }
@@ -129,8 +166,8 @@ flagchecktable: {
         $00,  ;3
         $00,  ;4
         $00,  ;5
-        $01,  ;6
-        $01,  ;7
+        $01,  ;6    fadein
+        $01,  ;7    fadein
         $01,  ;8    ;gameplay
         $01,  ;9    ;start of door
         $01,  ;a    ;door
@@ -143,8 +180,8 @@ flagchecktable: {
         $01,  ;10   ;unpausing
         $01,  ;11   ;unpausing
         $01,  ;12   ;unpausing
-        $00,  ;13   ;unsure about death stuff, check this
-        $00,  ;14
+        $01,  ;13   ;unsure about death stuff, check this
+        $01,  ;14
         $00,  ;15
         $00,  ;16
         $00,  ;17
@@ -177,7 +214,13 @@ flagchecktable: {
 
 bg4tilemap: {
     .list: {
-        dw #.crateria, #.brinstar
+        dw #.crateria, #.brinstar, #.norfair
+    }
+    
+    .colormath: {
+           ;what to write to $2131
+           ;crateria, brinstar.  norfair
+        db %00001100, %00001100, %10001100
     }
     
     .crateria: {
@@ -186,6 +229,10 @@ bg4tilemap: {
     
     .brinstar: {
         incbin "./bg4tilemap_brinstar.map"
+    }
+    
+    .norfair: {
+        incbin "./bg4tilemap_norfair.map"
     }
 }
 ;warn pc
@@ -198,7 +245,7 @@ org $809692         ;skip changing color math and screen layers in the start hud
 +   jsr bg4handler_screenlayers
 
     skip 8
-    ldx #$006d      ;h counter target for next interrupt (hud end) vanilla = $98
+    ldx #$0098      ;h counter target for next interrupt (hud end) vanilla = $98. $88?
     
 org $8096cf
     ldx #$0078      ;h counter target for begin hud drawing interrupt. vanilla = 98
