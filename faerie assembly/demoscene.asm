@@ -1,7 +1,13 @@
 lorom ;ipsum dolor sit amet
 
-!82free     =       $82f750
-!demomode   =       $42
+!82free         =       $82f750
+!demomode       =       $42
+!samusx         =       $0af6
+!samusy         =       $0afa
+!samusybackup   =       $0b08
+!samusxbackup   =       $0b0c
+!bg1ybackup     =       $0362
+!bg1xbackup     =       $0364
 
 ;controller bit constants
 !kb                         =       #$8000
@@ -20,8 +26,19 @@ lorom ;ipsum dolor sit amet
 ;hijack the entire program why not
 ;uses game mode 3 (unused in sm normally)
 
+org $8fff00
+
+roomjack: {
+    lda #$0003
+    sta $0998
+    stz $07df
+    rts
+}
+
+
 org $828981+($3*2)
     dw #demohandler
+
 
 org !82free
 
@@ -50,6 +67,7 @@ demo: {
         
     +   lda #$0008          ;return with game mode set for main program
         sta $0998
+        stz !demomode
         bra -
     }
     
@@ -69,8 +87,18 @@ demo: {
         }
         
         ..init: {
-            jsl $808338
-            ;do something here
+            lda !samusy         ;we are going to use samus position to scrol level
+            sta !samusybackup   ;so save that for later restoring before we return to game
+            
+            lda !samusx
+            sta !samusxbackup
+            
+            lda $b3
+            sta !bg1ybackup
+            
+            lda $b1
+            sta !bg1xbackup
+            
             
             %changemode(1)      ;advance to mode 1 (load)
             rts
@@ -83,15 +111,36 @@ demo: {
         
         ..play: {
             jsr demo_input
+            jsr demo_advancescroll
+            jsl $9094ec         ;main scrolling routine
+            jsl $80a3ab         ;level update
             
-            ;%changemode(3)      ;advance to mode 3 (cleanup)
             rts
         }
         
         ..cleanup: {
+            lda !samusybackup   ;put samus back
+            sta !samusy
+            
+            lda !samusxbackup
+            sta !samusx
+            
+            lda !bg1xbackup
+            sta $b1
+            
+            lda !bg1ybackup
+            sta $b3
+            
+            jsl $9094ec
+            
             %changemode(4)      ;advance to mode 4 (signal to handler to exit)
             rts
         }
+    }
+    
+    .advancescroll: {
+        inc !samusy
+        rts
     }
     
     .input: {
@@ -102,7 +151,7 @@ demo: {
         ..st: {
             bit !kst
             beq ...nost
-            %changemode(4)
+            %changemode(3)
             ...nost:
         }
         
@@ -116,14 +165,16 @@ demo: {
         ..up: {                                 ;dpad start
             bit !kup
             beq ...noup
-            inc $b3
+            dec !samusy
+            ;dec $0afa
             ...noup:
         }
         
         ..dn: {
             bit !kdn
             beq ...nodn
-            dec $b3
+            inc !samusy
+            ;inc $0afa
             ...nodn:
         }
         
