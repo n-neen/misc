@@ -5,6 +5,9 @@ lorom
 !bg1xscrollbackup   =   $c1
 !bg1yscrollbackup   =   $c3
 !hudcolormath       =   $0e
+!hudbitmaskpermode  =   $0336   ;whether or not we want to blank out the line below the hud
+                                ;if game mode = 3, this is 0
+                                ;otherwise, it is $80
 
 ;todo:
 ;       check draygon interrupts
@@ -13,6 +16,9 @@ org $80cd8e
 
 
 irqcleanup: {
+    ;8 bit A here
+    
+    
     ;we enter this routine with a known A
     ;to be stored in $212c
     ;however, we need to turn off the screen as fast as possible
@@ -20,7 +26,7 @@ irqcleanup: {
     
     tax
     
-    lda #$80
+    lda !hudbitmaskpermode
     ora $51
     sta $2100
     
@@ -140,8 +146,28 @@ bg4handler: {
         
         rep #$20
     }
+    
+    ;the following stuff does this:
+    ;if game mode = 3, then !hudbitmaskpermode = 0
+    ;else, it = $80
+    ;this gets written to $2100 for a single scanline after the hud
+    
++   
+    lda $0998
+    cmp #$03
+    beq ++
+    
         
-    +   rts
+    sep #$20
+    lda #$80
+    sta !hudbitmaskpermode
+    rep #$20
+    rts
+    
+++  rep #$20
+    stz !hudbitmaskpermode
+    rts
+    
 }
 
 ;game mode flag setting
@@ -163,7 +189,7 @@ flagchecktable: {
     db  $00,  ;0
         $00,  ;1
         $00,  ;2
-        $00,  ;3
+        $01,  ;3    ;demoscene
         $00,  ;4
         $00,  ;5
         $01,  ;6    fadein
