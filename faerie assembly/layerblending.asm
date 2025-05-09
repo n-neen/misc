@@ -58,11 +58,11 @@ org $88ee32
         sta $73
         rts
     
-    dark:
-        lda #%00010101          ;main screen
+    dark:                   ;$20
+        lda #%00000001          ;main screen
         sta $69
         
-        lda #%00000111          ;subscreen
+        lda #%00000110          ;subscreen
         sta $6b
         
         lda #%00000010          ;enable color math

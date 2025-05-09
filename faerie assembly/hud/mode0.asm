@@ -40,7 +40,10 @@ irqcleanup: {
     lda #$01
     sta $2105       ;mode back to 1
     
-    jsr waitforhblank_end
+
+-   lda $4212
+    bit #$40
+    beq -
     
     lda $51
     sta $2100
@@ -49,6 +52,7 @@ irqcleanup: {
 }
 
 waitforhblank: {
+    ;ended up pasting this above to do away with the jsr/rts for timing reasons
     .end: {
     -   lda $4212
         bit #$40
@@ -238,6 +242,15 @@ flagchecktable: {
         $00   ;2f
 }
 
+badhijack: {
+    sta $2130
+    
+    lda $51
+    ora #$80
+    sta $2100
+    rts
+}
+
 bg4tilemap: {
     .list: {
         dw #.crateria, #.brinstar, #.norfair
@@ -275,25 +288,28 @@ org $809692         ;skip changing color math and screen layers in the start hud
     
 org $8096cf
     ldx #$0078      ;h counter target for begin hud drawing interrupt. vanilla = 98
-    
+
+org $8096ad
+    jsr badhijack
+
 org $8096bc         ;end hud irq hijack to prepare for gameplay, which is in drawing mode 1
     jsr irqcleanup  ;and put mode back
+    
+org $8096da         ;start of door: begin hud drawing
+    nop #11
 
 org $809703         ;start of door: end of hud interrupt
     jsr irqcleanup
     
-org $8096da         ;start of door: begin hud drawing
-    nop #11
-    
-org $8097ec         ;horizontal door: end of hud interrupt
-    jsr irqcleanup
-
 org $809783         ;vertical door: end of hud interrupt
     jsr irqcleanup
 
 org $80975c         ;vertical door: begin hud drawing
     nop #9
     
+org $8097ec         ;horizontal door: end of hud interrupt
+    jsr irqcleanup
+
 org $8097c5         ;horizontal door: begin hud drawing
     nop #9
 

@@ -11,6 +11,9 @@ hook: {
         cmp $8b         ;if not pressing L+R+[dash]+up, exit
         bne +
         
+        ;warn pc
+        ..short:
+        
         lda #$0009
         sta $0998       ;change game mode to start door transition
         
@@ -24,6 +27,20 @@ hook: {
         
     +   rtl
     }
+    
+    .mainroutine: {     ;magicant main room main asm
+       ;warn pc         ;f023 currently
+        sep #$20
+        lda $51
+        bmi +
+    -   rep #$20
+        stz $07df
+        rts
+    +   and #$7f
+        sta $51
+        bra -
+    }
+}
     
     org $828b4b
     .hijack: {
