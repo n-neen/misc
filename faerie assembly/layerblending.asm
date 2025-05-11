@@ -12,6 +12,9 @@ org $88803e+$1e
 org $88803e+$20
     dw #dark
     
+org $88803e+$30
+    dw #fogboss
+    
 org $88ee32
     ethereal:               ;0e
         lda #%00010011          ;main screen
@@ -73,7 +76,22 @@ org $88ee32
         
         rts
     
-    
+    fogboss:                ;$30
+        lda #%00010011          ;main screen
+        sta $69
+        
+        lda #%00000100          ;subscreen
+        sta $6b
+        
+        lda #%00000010          ;enable color math
+        sta $70
+        
+        lda #%10111101          ;color math layers
+        sta $73
+        
+        rts
+        
+        
 org $89aa02
 
 ;  0        2                      8                      Eh                     14h                    1Ah

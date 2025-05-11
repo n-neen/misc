@@ -13,7 +13,7 @@ tilemapointer: {
     dw #noise_tilemap
 }
 
-org $88f000
+org $88f100
 noise: {
     .spawn: {
         jsl $88840a             ;vanilla hdma object for bg3 scroll
@@ -40,7 +40,7 @@ noise: {
     }
 }
 
-org $88ee84
+org $88f200
 
 scrollerobject: {
     
