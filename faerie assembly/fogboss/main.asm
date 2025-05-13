@@ -1,5 +1,7 @@
 lorom
 
+!amounttomovex      =       #$0001
+!amounttomovey      =       #$0001
 
 landing: {
     .main: {
@@ -21,15 +23,24 @@ landing: {
         jsr fog_init
         rtl
     }
+    
 }
 
 fog: {
     .main: {
-        ;
+        ;todo:
+        ;scroll
+        ;maybe turn around and scroll tother way
+        ;maybe blink?
+        
+        ldx $0e54
+        jsr fog_move_update
+        
         rts
     }
     
     .shot: {
+        ;warn pc
         ldx $0e54
         lda $0f8c,x             ;enemy health before shot
         pha
@@ -37,16 +48,20 @@ fog: {
         jsl $a0802d             ;normal enemy shot
         
         pla                     ;retrieve enemy health from before shot was processed
-        beq ++
+        ;beq ++
         cmp $0f8c,x
         beq +
         
+        phx
         ldy.w #hurtglow         ;spawn hurt glow pfo
         jsl $8dc4e9
+        plx
         
+        lda $7e7002,x
+        bne ++
         
     +   rts
-    
+        
     ++  jsr fog_death
         rts
     }
@@ -57,6 +72,7 @@ fog: {
         sta $0f92,x
         
         jsr fog_tilemapupload
+        jsr fog_move_write
         
         rts
     }
@@ -68,38 +84,104 @@ fog: {
         ;stuff that needs to happen after init but not part of main instruction list loop
         dw fog_palettesetup
         
-        
         ..loop:
-        dw #fog_aimain
         dw $0001, #spritemap_dummy
         dw !goto, #..loop
         dw !sleep
     }
     
-    .aimain: {
-        ;todo:
-        ;scroll
-        ;maybe turn around and scroll tother way
-        ;maybe blink?
+    .move: {
+        !bg3xscroll     =       $7ecadc
+        !bg3yscroll     =       $7ecade
+        !bg2x           =       $b5
+        !bg2y           =       $b7
+        !enemyx         =       $0f7a,x
+        !enemyy         =       $0f7e,x
+        !bg3xbackup     =       $05a2
+        !bg3ybackup     =       $05a4
+        !camerax        =       $0911
+        !cameray        =       $0915
         
+        ..write: {
+            ldx $0e54
+            
+            lda #$0000
+            clc
+            adc !camerax        ;bg2 x scroll = [camerax - enemyx] + $80
+            sec
+            sbc !enemyx
+            clc
+            adc #$0080
+            sta !bg2x
+            
+            lda #$0000
+            clc
+            adc !cameray        ;bg2 y scroll = [cameray - enemyy] + $68
+            sec
+            sbc !enemyy
+            clc
+            adc #$0068
+            sta !bg2y
+            
+            rts
+        }
         
-        
-        rtl
+        ..update: {
+            lda !enemyx
+            clc
+            adc !amounttomovex
+            sta !enemyx
+            cmp #$0200
+            beq +
+            
+            lda !enemyy
+            clc
+            adc !amounttomovey
+            sta !enemyy
+            cmp #$0100
+            beq ++
+            
+            -
+            jsr .move_write
+            rts
+            
+            +
+            stz !enemyx
+            bra -
+            
+            ++
+            stz !enemyy
+            bra -
+        }
+
+    }
+    
+    .stopwrapping: {
+        ;if samus x > #$0200 then turn off layer 2?
+        rts
     }
     
     .palettesetup: {
-        ;rtl
+        rtl
         
         lda $7ec030
+        clc
+        adc #!colorshift
         sta $7ec0f0
         
         lda $7ec032         ;copy 4 colors from palette blend (bg3 palette 6, bg1 palette 1)
+        clc
+        adc #!colorshift
         sta $7ec0f2         ;to bg1 palette 7
         
         lda $7ec034
+        clc
+        adc #!colorshift
         sta $7ec0f4
         
         lda $7ec036
+        clc
+        adc #!colorshift
         sta $7ec0f6
         
         rtl
@@ -110,6 +192,11 @@ fog: {
         ;clear bg2 tilemap
         ;spawn drops
         ;maybe change music
+        
+        lda #$0022
+        sta $1984
+        
+        
         rts
     }
     
@@ -148,11 +235,6 @@ fog: {
 }
 
 
-
-
-
-
-
 bg2tilemap: {
     incsrc "./bg2tilemap.asm"
 }
@@ -162,3 +244,9 @@ spritemap: {
         dw $0000
     }
 }
+
+org $8fff10
+    jsl fog_palettesetup
+    stz $07df
+    rts
+    

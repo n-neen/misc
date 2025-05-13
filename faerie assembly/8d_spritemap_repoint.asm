@@ -3,13 +3,13 @@ lorom
 ;$8d spritemap repoint
 
 org $868391
-    pea $f000       ;enemy projectile spritemaps db setting = bank $f0
+    pea $BABA       ;enemy projectile spritemaps db setting = bank $f0
 
 org $8683b5
-    pea $f000       ;enemy projectile spritemaps db setting = bank $f0
+    pea $BABA       ;enemy projectile spritemaps db setting = bank $f0
 
 
-org $f08000
+org $BA8000
 
 EnemyProjSpritemaps_Blank_Default:
     dw $0000,$0000                                                     ;8D8000|        |      ;

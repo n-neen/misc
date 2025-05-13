@@ -68,10 +68,13 @@ waitforhblank: {
     }
 }
 
+kraidcase:
+    jmp kraidhandle
 
 bg4handler: {
     ;we rep #$30'd right before coming here
     inc $05b6           ;the thing we overwrote
+    
     
     jsr flagset         ;determine if we want to update the hud's bg4 in the current game mode
     
@@ -79,6 +82,10 @@ bg4handler: {
     tax
     lda bg4tilemap_colormath,x
     sta !hudcolormath
+    
+    lda $179c
+    cmp #$0003
+    beq kraidcase
     
     lda !hudflag
     beq +
@@ -174,6 +181,21 @@ bg4handler: {
     
 }
 
+kraidhandle: {
+    lda $179c
+    cmp #$0003
+    bne +
+    warn pc
+    sep #$20
+    lda $51
+    ora #$80
+    sta $2100
+    rep #$20
+    stz !hudflag
+    
++   rts
+}
+
 ;game mode flag setting
 ;only want to run our nmi routine if we are in a mode where the hud exists
 
@@ -196,8 +218,8 @@ flagchecktable: {
         $01,  ;3    ;demoscene
         $00,  ;4
         $00,  ;5
-        $01,  ;6    fadein
-        $01,  ;7    fadein
+        $01,  ;6    ;fadein
+        $01,  ;7    ;fadein
         $01,  ;8    ;gameplay
         $01,  ;9    ;start of door
         $01,  ;a    ;door
@@ -259,7 +281,7 @@ bg4tilemap: {
     .colormath: {
            ;what to write to $2131
            ;crateria, brinstar.  norfair
-        db %00001100, %00001100, %10001100
+        db %00001100, %00001100, %10001100      ;10001100
     }
     
     .crateria: {
@@ -320,7 +342,15 @@ org $8092cf         ;vanilla's nmi bg4 udpate
     bra +
     nop #18
     + 
+
+org $809590
+    jsr kraidhandle
     
+    ;nop #4
+    
+    ;lda #$0000
+    ;tcd
+
 ;pause menu edits
 
 org $828dfc         ;changes drawing mode during pausing backup

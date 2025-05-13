@@ -242,14 +242,15 @@ demo: {
         ..l: {
             bit !kl
             beq ...nol
-                dec $0917                           ;shift layer 2 left
+                ;jsl $a08eb6
+                ;jsl $a0bfd4                         ;main enemy routine
             ...nol:
         }
         
         ..r: {
             bit !kr
             beq ...nor
-                inc $0917                           ;shift layer 2 right
+                ;inc $0917                           ;shift layer 2 right
             ...nor:
         }
         rts

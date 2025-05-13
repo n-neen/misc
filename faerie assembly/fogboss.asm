@@ -2,6 +2,8 @@ lorom
 
 org $b88000
 
+!colorshift     =   $0010
+
 incsrc "./libraries/CommonEnemyCode.asm"
 incsrc "./fogboss/main.asm"
 incsrc "./fogboss/demoscene.asm"
