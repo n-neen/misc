@@ -18,6 +18,9 @@ org $88803e+$30
 org $88803e+$22
     dw fogboss2
     
+org $88803e+$24
+    dw fogboss3
+    
 org $88ee32
     ethereal:               ;0e
         lda #%00010011          ;main screen
@@ -74,7 +77,7 @@ org $88ee32
         lda #%00000010          ;enable color math
         sta $70
         
-        lda #%10111111          ;color math layers
+        lda #%10111011          ;color math layers
         sta $73
         
         rts
@@ -89,12 +92,12 @@ org $88ee32
         lda #%00000010          ;enable color math
         sta $70
         
-        lda #%10111101          ;color math layers
+        lda #%10111011          ;color math layers
         sta $73
         
         rts
         
-    fogboss2:               ;$22
+    fogboss2:               ;$22            ;this gets loaded on death
         lda #%00010001          ;main screen
         sta $69
         
@@ -109,6 +112,22 @@ org $88ee32
         
         rts
         
+        
+    fogboss3:               ;$24            ;this gets loaded on hit
+        lda #%00010011          ;main screen
+        sta $69
+        sta $6a
+        
+        lda #%00000100          ;subscreen
+        sta $6b
+        
+        lda #%00000010          ;enable color math
+        sta $70
+        
+        lda #%10111101          ;color math layers
+        sta $73
+        
+        rts
         
 org $89aa02
 

@@ -1,7 +1,10 @@
 lorom
 
-!amounttomovex      =       #$0001
-!amounttomovey      =       #$0001
+!amounttomovex      =       $0fa8,x
+!amounttomovey      =       $0faa,x
+!flashcounter       =       $0fac,x
+!scrollycounter     =       $0fae,x
+
 
 landing: {
     .main: {
@@ -34,6 +37,9 @@ fog: {
         ;maybe blink?
         
         ldx $0e54
+        
+        
+        jsr .layerflash         ;handle layers during hurt flash
         jsr fog_move_update
         
         rts
@@ -55,6 +61,8 @@ fog: {
         phx
         ldy.w #hurtglow         ;spawn hurt glow pfo
         jsl $8dc4e9
+        lda #$0008
+        sta !flashcounter
         plx
         
         lda $7e7002,x
@@ -64,6 +72,27 @@ fog: {
         
     ++  jsr fog_death
         rts
+    }
+    
+    .layerflash: {
+        lda #$0030
+        sta $1984
+        
+        lda $05b6
+        bit #$0005
+        bne +
+        
+        lda !flashcounter
+        beq +
+        dec
+        sta !flashcounter
+        
+        lda #$0024
+        sta $1984
+        
+    +   rts
+        
+        
     }
     
     .init: {
@@ -111,7 +140,7 @@ fog: {
             sec
             sbc !enemyx
             clc
-            adc #$0080
+            adc #$0080          ;enemy offset from left edge of bg2 tilemap
             sta !bg2x
             
             lda #$0000
@@ -120,7 +149,7 @@ fog: {
             sec
             sbc !enemyy
             clc
-            adc #$0068
+            adc #$0068          ;enemy offset from top of bg2 tilemap
             sta !bg2y
             
             rts
@@ -143,6 +172,8 @@ fog: {
             
             -
             jsr .move_write
+            jsr .move_decidenextmove
+            
             rts
             
             +
@@ -153,12 +184,18 @@ fog: {
             stz !enemyy
             bra -
         }
-
-    }
-    
-    .stopwrapping: {
-        ;if samus x > #$0200 then turn off layer 2?
-        rts
+        
+        ..decidenextmove: {
+            lda $05e5
+            and #$0002
+            sta !amounttomovey
+            
+            lda $05e5
+            xba
+            and #$0002
+            sta !amounttomovex
+            rts
+        }
     }
     
     .palettesetup: {

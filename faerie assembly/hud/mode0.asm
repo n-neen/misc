@@ -40,6 +40,8 @@ irqcleanup: {
     lda #$01
     sta $2105       ;mode back to 1
     
+    ;lda $73
+    ;sta $2131
 
 -   lda $4212
     bit #$40

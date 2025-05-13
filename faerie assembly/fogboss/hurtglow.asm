@@ -53,7 +53,7 @@ org $8d8000
         dw !done
         
         dw $0001
-        dw $2063+!colorshift, $4800+!colorshift, $5463+!colorshift, $7ef3+!colorshift
+        dw $0000+!colorshift, $0060+!colorshift, $347c+!colorshift, $0063+!colorshift
         dw !done
         
         yadone:
