@@ -187,7 +187,7 @@ kraidhandle: {
     lda $179c
     cmp #$0003
     bne +
-    warn pc
+    ;warn pc
     sep #$20
     lda $51
     ora #$80

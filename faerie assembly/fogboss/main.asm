@@ -16,6 +16,7 @@ landing: {
     
     .shot: {
         ;$868b
+        ;warn pc
         jsr fog_shot
         rtl
     }
@@ -27,21 +28,36 @@ landing: {
         rtl
     }
     
+    .touch: {
+        ;8693
+        ;warn pc
+        jsr fog_touch
+        rtl
+    }
 }
 
 fog: {
     .main: {
         ;todo:
-        ;scroll
         ;maybe turn around and scroll tother way
-        ;maybe blink?
         
         ldx $0e54
-        
         
         jsr .layerflash         ;handle layers during hurt flash
         jsr fog_move_update
         
+        rts
+    }
+    
+    .touch: {
+        jsl $a0a477
+        lda $0f8c,x
+        beq +                   ;if health = 0
+        
+        rts
+        
+        +
+        jsr fog_death
         rts
     }
     
@@ -54,9 +70,10 @@ fog: {
         jsl $a0802d             ;normal enemy shot
         
         pla                     ;retrieve enemy health from before shot was processed
-        ;beq ++
         cmp $0f8c,x
-        beq +
+        beq +                   ;if health has not changed, return
+        
+        ;if health has changed,
         
         phx
         ldy.w #hurtglow         ;spawn hurt glow pfo
@@ -65,8 +82,8 @@ fog: {
         sta !flashcounter
         plx
         
-        lda $7e7002,x
-        bne ++
+        lda $0f8c,x             ;if health = 0
+        beq ++                  ;goto death routine
         
     +   rts
         
@@ -132,6 +149,9 @@ fog: {
         !cameray        =       $0915
         
         ..write: {
+            ;this does the alignment of the bg2 tilemap to
+            ;the camera and to the enemy hitbox
+            
             ldx $0e54
             
             lda #$0000
@@ -225,14 +245,11 @@ fog: {
     }
     
     .death: {
-        ;spawn explosion
-        ;clear bg2 tilemap
         ;spawn drops
         ;maybe change music
         
         lda #$0022
         sta $1984
-        
         
         rts
     }
@@ -286,4 +303,4 @@ org $8fff10
     jsl fog_palettesetup
     stz $07df
     rts
-    
+
