@@ -1,0 +1,1 @@
+not super metroid related but put up on here just for posterity. this is a kaleidoscopinc demo program i wrote entirely on may 24th, 2025, using the unfinished snes glider source as a base and cramming it all into one file. it isn't exactly rapidly flashing but if you are photosensitive be careful.
