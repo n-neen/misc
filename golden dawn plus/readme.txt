@@ -28,3 +28,6 @@ v2:
 v3:
     new save locations
     mother brain music fix to avoid crashes
+    
+v4:
+    fixed bug with phantoon save not appearing in boss-dead state
