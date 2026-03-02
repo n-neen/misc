@@ -1,0 +1,123 @@
+;================================================= ram: =================================================
+
+
+long pointers:
+$45: decompression destination 2?
+$48: decompression destination?
+$4b: decompression source?
+
+$5a: $2100 register buffer
+
+$60: hdma enable buffer ($420c)
+
+$0124: oam buffer start
+
+$0368: set to $20 at $80805d
+
+$04dc: nmi counter
+$04da: nmi function table index #1 (table is $9d14)
+$04e4: nmi function table index $2 (table is $9faf)
+$04e6: something about lag
+
+$0544: somethin important that's for sure
+
+$0848: set to 0 at $809e6d
+
+$08d3: some kind of request flag for nmi handler to do something like cgram transfer
+$08d5: related to above
+
+$08d7: 
+$08d9: set to 6 at $808074
+        music sample set?
+        
+$08dd: music track, pretty sure
+
+
+
+$0997: 
+
+$0a79: health
+
+$1991: controller
+    $1991-1998 is for controller
+    
+
+$19ad: checked to < $0014 at start of gameplay loop
+$19af: checked to > $0014 at start of gameplay loop
+
+$7e8000: level collision, probably ends at $7e84ff
+$7e91ae: bg3 tilemap buffer
+
+$7f is mostly graphics buffer
+
+
+
+;================================================= rom: =================================================
+
+==================== bank 80 ====================
+
+
+$809e66:
+    setting up title?
+
+$80ead4
+    setting up gameplay?
+
+$808dee:
+    good candidate for gameplay top level state handler
+
+$809a99:
+    call $9977 with y = $801 and a = $12
+    
+$809977:
+    audio track something?
+
+$8099be:
+    argument: A
+    x = a * 2
+    
+
+#80a2c2:
+    wait for nmi
+    
+$80a030:
+    nmi handler
+    does unecessary php/plp!
+    does not JML to bank $80!
+    
+$80a221:
+    something with irq, set main screen layers?
+    
+$80a3f7:
+    pause wait loop for start button
+
+$80a486:
+    clear controller related addresses
+
+
+
+=====================================================
+
+
+$818fe9:
+    $4b as long pointer
+    indexed by y
+    asl, tax, jmp by x
+
+$8195bb:
+    nmi routine for dma to vram
+
+$818d8d is some manner of jump table
+
+$81acb8:
+
+$81c45e/c45a (long-short)
+    
+
+$828000:
+    possibly music track list
+    
+    
+
+$82a65f: ???
+$8ced94: ???
