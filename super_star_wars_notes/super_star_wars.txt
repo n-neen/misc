@@ -6,6 +6,7 @@ $45: decompression destination 2?
 $48: decompression destination?
 $4b: decompression source?
 
+$5e: main screen layers
 $5a: $2100 register buffer
 
 $60: hdma enable buffer ($420c)
@@ -17,6 +18,8 @@ $0368: set to $20 at $80805d
 $04dc: nmi counter
 $04da: nmi function table index #1 (table is $9d14)
 $04e4: nmi function table index $2 (table is $9faf)
+    might actually be interrupt command (seen in irq handler as function index)
+
 $04e6: something about lag
 
 $0544: somethin important that's for sure
@@ -75,10 +78,12 @@ $809977:
 $8099be:
     argument: A
     x = a * 2
-    
 
-#80a2c2:
-    wait for nmi
+$80a246: irq command for setting main screen layers
+    seems to happen on line 203, really no idea why
+
+$80a2c2:
+    wait for nmi. seems to only be used during pausing?
     
 $80a030:
     nmi handler
