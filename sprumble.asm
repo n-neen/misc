@@ -8,9 +8,9 @@ freespace84         =   $84f300     ;free space in abnk $84 ($4c bytes)
 
 ; =========================== bank $94 =============================
 org $949139+(!bts_normal*2)     ;plm list for block type $b
-    dw sprumble                 ;block subtype (bts)*2
+    dw sprumble                 ;block subtype (bts)
 org $949139+(!bts_respawning*2) ;plm list for block type $b
-    dw respawning_sprumble      ;block subtype (bts)*2
+    dw respawning_sprumble      ;block subtype (bts)
 
 org freespace94
 spikelongshort: {
