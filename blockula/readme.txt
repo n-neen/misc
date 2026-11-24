@@ -1,7 +1,7 @@
 original concept by kyzentun
 development by neen
 
-every frame, a block will spawn, from among the types:
+every other frame, a block will spawn, from among the types:
 
 normal spike
 air spike
