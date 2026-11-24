@@ -14,4 +14,6 @@ crumble
 
 the entire level data array is used for every room regaless of size. so smaller rooms have a lower effective rate of blocks spawning
 
+this will overwrite literally evry block in a room at random, regardless of tile type. door caps, door transition tiles, every other crucially important tile could become completely ruined by this
+
 i don't think i ever beat this so have fun
