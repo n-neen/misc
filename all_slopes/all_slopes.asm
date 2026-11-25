@@ -1,21 +1,23 @@
-org $82e38a
+org $82e767
 hijack: {
-    jmp slopulator
+    jsr slopulator
+    ;this is about as late as possible anything in a door transition can be
+    ;this is right at the point where game state is changed back to 'main gameplay' (8)
 }
 
 org $82f800
 slopulator: {
-    ;A = $e38a
+    sta $0998                   ;the thing we overwrote
+    
     phy                         ;registers we clobber
     phx
     phb
     
-    sta $099c                   ;the thing we overwrote
-    
     lda $07b9                   ;x = level data size
-    asl
-    inc a
+    ;asl
+    ;inc a
     tax
+    inx
     
     pea $7f7f                   ;db = $7f
     plb

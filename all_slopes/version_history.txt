@@ -3,3 +3,8 @@ v1:
 v2:
     fixed bug where some rooms did not work, probably based on background type?
     bt room, flyway, green brin shaft, lower mushrooms, terminator all did not work previously
+    
+v3:
+    fixed bug with very large rooms not working (math problem with level data size)
+    tile changing now happens as late in the door transition as possible, right before
+        game state changes back to main gameplay
